@@ -1,4 +1,4 @@
-<!-- 00{% include 'empleados/body.html'%} -->
+<!--{% include 'empleados/body.html'%} -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +10,32 @@
 <body>
     <!--<h1>Titulo H1</h -->
     <p>TEMPLATES</p>
-    <thead>
+    <table>
+        <thead>
         <tr>
             <th>#</th>
-            <th>Foto</th>
+            <th>Foto</th>3
             <th>Nombre</th>
             <th>Correo</th>
             <th>Acciones</th>
-        </tr>
-    </thead>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empleado in empleados %}
+            <tr>
+                <td>{{empleado[0]}}</td>
+                <img class="img-thumbnail" width="100" src="uploads/{{[3]}}" alt="foto empleado"></td>
+                <td>{{empleado[1]}}</td>
+                <td>{{empleado[2]}}</td>
+                <td>
+                    <a href="/edit/{{empleado[0]}}">Editar</a>
+                    <a href="/destroy/{{empleado[0]}}" >Eliminar</a>
+                </td>  
+            </tr>
+            {% endfor %}
+        </tbody>.
+    </table>
 </body>
 </html>
+
+<!--{% include 'empleados/footer.html'%} -->

@@ -1,8 +1,8 @@
 from colorama import Cursor
 from flask import Flask
-from flask import render_template
+from flask import render_template,request,redirect
 from flaskext.mysql import MySQL
-from flask import request, redirect
+#from flask import request, redirect
 from datetime import datetime
 
 from flaskext.mysql import MySQL
@@ -33,13 +33,23 @@ def index():
     conn=mysql.connect() #Nos conectamos a la base de datos
     cursor=conn.cursor() #Sobre el cursor vamos a realizar 
     cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
- #Copiamos el contenido del cursor a una variable
-    #return render_template('empleados/index.html')
-   # db_empleados = Cursor.fetchall()
-    conn.commit()
-    #return render_template('empleados/index.html')
-    #, empleados = db_empleados
+    db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
+    conn.commit()#cerramos la conexion 
+    #Devolvemos codigo HTML para ser renderizado.
+    return render_template('empleados/index.html', empleados=db_empleados)
     
+    
+@app.route('/destroy/<int:id>')
+def destroy(id):
+    conn=mysql.connect()
+    cursor=conn.cursor()
+    Cursor.execute("DELETE FROM `sistema2`.`empleados`WHERE id=%s;",(id))
+    conn.commit()
+    return redirect("/")
+     #return render_template('empleados/create.html')
+   # sql = DELETE FROM `sistema2`.`empleados`WHERE id=%s;"
+
+ 
 @app.route('/create')
 def create():
      return render_template('empleados/create.html')
