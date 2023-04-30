@@ -39,10 +39,10 @@ def index():
     return render_template('empleados/index.html', empleados=db_empleados)
     
     
-@app.route('/destroy/<int:id>')
+@app.route('/edit/<int:id>')
 def destroy(id):
     conn=mysql.connect()
-    cursor=conn.cursor()
+    cursor=conn.cursor (parameter) #id: any
     Cursor.execute("DELETE FROM `sistema2`.`empleados`WHERE id=%s;",(id))
     conn.commit()
     return redirect("/")
