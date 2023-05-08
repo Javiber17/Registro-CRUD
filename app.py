@@ -20,39 +20,29 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
-    #sql="INSERT INTO `sistema2`.`empleados` (`id`, `nombre`, `correo`, `foto`)\
-   #VALUES (NULL, 'Xavito', 'xavito7@gmail.com.ar', 'fotojosias.jpg');"
-   #conn=mysql.connect()
-   #cursor=conn.cursor()
-   #cursor.execute(sql)
-   #conn.commit()
-   #return render_template("empleados/index.html")
-   #return render_template('empleados/index.html')
-   #
-    sql="SELECT * FROM `sistema2`.`empleados`;"
-    conn=mysql.connect() #Nos conectamos a la base de datos
-    cursor=conn.cursor() #Sobre el cursor vamos a realizar 
-    cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
-    db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
-    conn.commit()#cerramos la conexion 
+ conn=mysql.connect() #Nos conectamos a la base de datos
+ cursor=conn.cursor() #Sobre el cursor vamos a realizar 
+ sql="SELECT * FROM empleados;" #sistema2.empleados;
+ cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
+ db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
+ conn.commit()#cerramos la conexion 
     #Devolvemos codigo HTML para ser renderizado.
-    return render_template('empleados/index.html', empleados=db_empleados)
-    
-    
+ return render_template('empleados/index.html', empleados=db_empleados)
+
 @app.route('/edit/<int:id>')
 def destroy(id):
-    conn=mysql.connect()
-    cursor=conn.cursor (parameter) #id: any
-    Cursor.execute("DELETE FROM `sistema2`.`empleados`WHERE id=%s;",(id))
-    conn.commit()
-    return redirect("/")
+ conn=mysql.connect()
+ cursor=conn.cursor () #id: any
+ Cursor.execute("DELETE FROM `sistema2`.`empleados`WHERE id=%s;",(id))
+ conn.commit()
+ return redirect("/")
      #return render_template('empleados/create.html')
    # sql = DELETE FROM `sistema2`.`empleados`WHERE id=%s;"
 
  
 @app.route('/create')
 def create():
-     return render_template('empleados/create.html')
+ return render_template('empleados/create.html')
 
 @app.route('/store',methods=['POST'])
 def storage():
@@ -84,6 +74,6 @@ def storage():
     return render_template('empleados/index.html')
     
 if __name__=="__main__":
-    app.run(debug=True, port=8050)
+    app.run(debug=True)
     #return render_template('empreados/create.html')
     
