@@ -22,7 +22,7 @@ mysql.init_app(app)
 def index():
  conn=mysql.connect() #Nos conectamos a la base de datos
  cursor=conn.cursor() #Sobre el cursor vamos a realizar 
- sql="SELECT * FROM `sistema2.empleados`;" #sistema2.empleados;
+ sql="SELECT * FROM `sistema2 . empleados`;" #sistema2.empleados;
  cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
  db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
  conn.commit()#cerramos la conexion 
@@ -69,7 +69,6 @@ def storage():
     cursor=conn.cursor()
     cursor.execute(sql, datos)
     conn.commit()
-   
     
     return render_template('empleados/index.html')
     
