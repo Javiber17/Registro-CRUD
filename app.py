@@ -22,12 +22,12 @@ mysql.init_app(app)
 def index():
  conn=mysql.connect() #Nos conectamos a la base de datos
  cursor=conn.cursor() #Sobre el cursor vamos a realizar 
- sql="SELECT * FROM empleados;" #sistema2.empleados;
+ sql="SELECT * FROM `sistema2.empleados`;" #sistema2.empleados;
  cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
  db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
  conn.commit()#cerramos la conexion 
     #Devolvemos codigo HTML para ser renderizado.
- return render_template('empleados/index.html', empleados=db_empleados)
+ return render_template('empleados/index.html', empleados = db_empleados)
 
 @app.route('/edit/<int:id>')
 def destroy(id):
