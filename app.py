@@ -22,33 +22,43 @@ mysql.init_app(app)
 def index():
  conn=mysql.connect() #Nos conectamos a la base de datos
  cursor=conn.cursor() #Sobre el cursor vamos a realizar 
- sql="SELECT * FROM `sistema2 . empleados`;" #sistema2.empleados;
+ sql="SELECT * FROM `sistema2`.`empleados`;" #"SELECT * FROM `sistema2`.`empleados`;
  cursor.execute(sql) #Ejecutamos la sentencia SQL sobre el cursor.
- db_empleados = Cursor.fetchall()#Copiamos el contenido del cursor a una variable
+ db_empleados = cursor.fetchall()
  conn.commit()#cerramos la conexion 
     #Devolvemos codigo HTML para ser renderizado.
  return render_template('empleados/index.html', empleados = db_empleados)
 
-@app.route('/edit/<int:id>')
+@app.route('/destroy/<int:id>')
 def destroy(id):
+ sql= "DELETE FROM `sistema2`.`empleados` WHERE id=%s;"
  conn=mysql.connect()
- cursor=conn.cursor () #id: any
- Cursor.execute("DELETE FROM `sistema2`.`empleados`WHERE id=%s;",(id))
+ 
+ cursor=conn.cursor() #id: any
+ Cursor.execute(sql,(id))
  conn.commit()
  return redirect("/")
-     #return render_template('empleados/create.html')
-   # sql = DELETE FROM `sistema2`.`empleados`WHERE id=%s;"
 
+@app.route('/edit/<int:id>')
+def edit(id):
+ sql= "SELECT FROM `sistema2`.`empleados`WHERE id=%s;"
+ conn=mysql.connect()
  
+ cursor=conn.cursor() #id: any
+ Cursor.execute(sql,(id))
+ empleados= cursor.fetchone()
+ conn.commit()
+ return redirect("/")
+  
 @app.route('/create')
 def create():
  return render_template('empleados/create.html')
 
 @app.route('/store',methods=['POST'])
 def storage():
-    _nombre = request.form['textName']
-    _correo = request.form['textCorreo']
-    _foto = request.files['textFoto']
+    _nombre = request.form['txtName']
+    _correo = request.form['txtCorreo']
+    _foto = request.files['txtFoto']
     #Guardamos en now los datos de fecha y hora
     now = datetime.now()
     #y en tiempo almacenamos una cadena con esos datos    
@@ -69,8 +79,14 @@ def storage():
     cursor=conn.cursor()
     cursor.execute(sql, datos)
     conn.commit()
-    
     return render_template('empleados/index.html')
+    
+@app.route('/update',methods=['POST'])
+def update():
+    _nombre = request.form['txtName']
+    _correo = request.form['txtCorreo']
+    _foto = request.files['txtFoto']
+    id=request.form['txtFoto']
     
 if __name__=="__main__":
     app.run(debug=True)
