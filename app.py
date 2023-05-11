@@ -47,8 +47,7 @@ def edit(id):
  cursor=conn.cursor() #id: any
  Cursor.execute(sql,(id))
  empleados= cursor.fetchone()
- conn.commit()
- return redirect("/")
+ return render_template('empleados/edit.html', empleados = empleados)
   
 @app.route('/create')
 def create():
@@ -87,7 +86,12 @@ def update():
     _correo = request.form['txtCorreo']
     _foto = request.files['txtFoto']
     id=request.form['txtFoto']
-    
+    sql = "UPDATE `sistema2`.`empleados` SET `nombre`=%s `correo`=%s `correo`=%s WHERE d=;"
+    datos=(_nombre,_correo,id)
+    conn=mysql.connect()
+    cursor=conn.cursor()
+    cursor.execute(sql, datos)
+    conn.commit()
 if __name__=="__main__":
     app.run(debug=True)
     #return render_template('empreados/create.html')
