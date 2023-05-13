@@ -33,7 +33,6 @@ def index():
 def destroy(id):
  sql= "DELETE FROM `sistema2`.`empleados` WHERE id=%s;"
  conn=mysql.connect()
- 
  cursor=conn.cursor() #id: any
  Cursor.execute(sql,(id))
  conn.commit()
@@ -43,7 +42,6 @@ def destroy(id):
 def edit(id):
  sql= "SELECT FROM `sistema2`.`empleados`WHERE id=%s;"
  conn=mysql.connect()
- 
  cursor=conn.cursor() #id: any
  Cursor.execute(sql,(id))
  empleados= cursor.fetchone()
