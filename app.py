@@ -42,7 +42,7 @@ def destroy(id):
 def edit(id):
  conn=mysql.connect()
  cursor=conn.cursor() #id: any
- Cursor.execute("SELECT FROM `sistema2`.`empleados`WHERE id=%s;",(id))
+ Cursor.execute("SELECT * FROM `sistema2`.`empleados`WHERE id=%s;", (id))
  # sql= "SELECT FROM `sistema2`.`empleados`WHERE id=%s;"
  empleados= cursor.fetchall()
  conn.commit()
