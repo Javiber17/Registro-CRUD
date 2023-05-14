@@ -29,21 +29,42 @@ def index():
     #Devolvemos codigo HTML para ser renderizado.
  return render_template('empleados/index.html', empleados = db_empleados)
 
+#@app.route('/destroy/<int:id>')
+#def destroy(id):
+ #sql= ("DELETE FROM `sistema2`.`empleados` WHERE id=%s;")
+ #conn=mysql.connect()
+ #cursor=conn.cursor()
+ #Cursor.execute(sql,(id))
+ #conn.commit()
+ #return redirect("/")
+
+#--------------------------------------------------------------------
+# Función para eliminar un registro
 @app.route('/destroy/<int:id>')
 def destroy(id):
- sql= "DELETE FROM `sistema2`.`empleados` WHERE id=%s;"
- conn=mysql.connect()
- cursor=conn.cursor() #id: any
- Cursor.execute(sql,(id))
+ conn = mysql.connect()
+ cursor = conn.cursor()
+ cursor.execute("DELETE FROM `sistema2`.`empleados` WHERE id=%s", (id))
  conn.commit()
- return redirect("/")
+ return redirect('/')
 
+#@app.route('/edit/<int:id>')
+#def edit(id):
+ #conn=mysql.connect()
+ #cursor=conn.cursor()
+ #Cursor.execute("SELECT*FROM `sistema2`.`empleados` WHERE id=%s", (id))
+ #empleados= cursor.fetchall()
+ #conn.commit()
+ #return render_template('empleados/edit.html', empleados=empleados)
+
+#--------------------------------------------------------------------
+# Función para editar un registro
 @app.route('/edit/<int:id>')
 def edit(id):
- conn=mysql.connect()
- cursor=conn.cursor() #id: any
- Cursor.execute("SELECT * FROM `sistema2`.`empleados` WHERE id=%s", (id))
- empleados= cursor.fetchall()
+ conn = mysql.connect()
+ cursor = conn.cursor()
+ cursor.execute("SELECT * FROM `sistema2`.`empleados` WHERE id=%s", (id))
+ empleados=cursor.fetchall()
  conn.commit()
  return render_template('empleados/edit.html', empleados=empleados)
   
