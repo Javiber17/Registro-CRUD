@@ -98,20 +98,56 @@ def storage():
     cursor.execute(sql, datos)
     conn.commit()
     return render_template('empleados/index.html')
-    
-@app.route('/update',methods=['POST'])
+
+#--------------------------------------------------------------------
+# Función para actualizar los datos de un registro
+@app.route('/update', methods=['POST'])
 def update():
-    _nombre = request.form['txtName']
-    _correo = request.form['txtCorreo']
-    _foto = request.files['txtFoto']
-    id=request.form['txtFoto']
-    sql = "UPDATE `sistema2`.`empleados` SET `nombre`=%s `correo`=%s `correo`=%s WHERE id=%s;"
-    datos=(_nombre,_correo,id)
-    conn=mysql.connect()
-    cursor=conn.cursor()
-    cursor.execute(sql, datos)
-    conn.commit()
-    return redirect('/')
+# Recibimos los valores del formulario y los pasamos a variables locales:
+ _nombre = request.form['txtNombre']
+ _correo = request.form['txtCorreo']
+ _foto = request.files['txtFoto']
+ id = request.form['txtID']
+# Armamos la sentencia SQL que va a actualizar los datos en la DB:
+ sql = "UPDATE `sistema2`.`empleados` SET `nombre`=%s, `correo`=%s WHERE id=%s;"
+# Y la tupa correspondiente
+ datos = (_nombre,_correo,id)
+ conn = mysql.connect()
+ cursor = conn.cursor()
+# Guardamos en now los datos de fecha y hora
+ now = datetime.now()
+# Y en tiempo almacenamos una cadena con esos datos
+ tiempo= now.strftime("%Y%H%M%S")
+#Si el nombre de la foto ha sido proporcionado en el form...
+ if _foto.filename != '':
+# Creamos el nombre de la foto y la guardamos.
+  nuevoNombreFoto = tiempo + _foto.filename
+ _foto.save("uploads/" + nuevoNombreFoto)
+# Buscamos el registro y buscamos el nombre de la foto vieja:
+ cursor.execute("SELECT foto FROM `sistema`.`empleados` WHERE id=%s", id)
+ fila= cursor.fetchall()
+# Y la borramos de la carpeta:
+os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
+# Finalmente, actualizamos la DB con el nuevo nombre del archivo:
+ cursor.execute("UPDATE `sistema`.`empleados` SET foto=%s WHERE id=%s;", (nuevoNombreFoto, id))
+ conn.commit()
+ cursor.execute(sql, datos)
+ conn.commit()
+ return redirect('/')
+    
+#@app.route('/update',methods=['POST'])
+#def update():
+ #   _nombre = request.form['txtName']
+  #  _correo = request.form['txtCorreo']
+   # _foto = request.files['txtFoto']
+    #id=request.form['txtFoto']
+#    sql = "UPDATE `sistema2`.`empleados` SET `nombre`=%s `correo`=%s WHERE id=%s;"
+#    datos=(_nombre,_correo,id)
+#    conn=mysql.connect()
+#    cursor=conn.cursor()
+#    cursor.execute(sql, datos)
+#    conn.commit()
+#    return redirect('/')
     
 if __name__=="__main__":
     app.run(debug=True)
