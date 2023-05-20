@@ -1,9 +1,10 @@
 from colorama import Cursor
 from flask import Flask
-from flask import render_template,request
+from flask import render_template,request,url_for
 from flaskext.mysql import MySQL
 from flask import redirect
 from datetime import datetime
+import os
 
 from flaskext.mysql import MySQL
 
@@ -17,6 +18,9 @@ app.config['MYSQL_DATABASE_PASSWORD']=''
 app.config['MYSQL_DATABASE_BD']='sistema2'
 
 mysql.init_app(app)
+
+CARPETA= os.path.join('uploads')
+app.config['CARPETA']=CARPETA
 
 @app.route('/')
 def index():
@@ -124,12 +128,12 @@ def update():
   nuevoNombreFoto = tiempo + _foto.filename
   _foto.save("uploads/" + nuevoNombreFoto)
 # Buscamos el registro y buscamos el nombre de la foto vieja:
-  cursor.execute("SELECT foto FROM `sistema`.`empleados` WHERE id=%s", id)
+  cursor.execute("SELECT foto FROM `sistema2`.`empleados` WHERE id=%s", id)
   fila= cursor.fetchall()
 # Y la borramos de la carpeta:
   os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
 # Finalmente, actualizamos la DB con el nuevo nombre del archivo:
-  cursor.execute("UPDATE `sistema`.`empleados` SET foto=%s WHERE id=%s;", (nuevoNombreFoto, id))
+  cursor.execute("UPDATE `sistema2`.`empleados` SET foto=%s WHERE id=%s;", (nuevoNombreFoto, id))
   conn.commit()
   cursor.execute(sql, datos)
   conn.commit()

@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    {% for empleado in empleados %}
     <form method="post" action="/update" enctype="multipart/form-data">
         ID:
         <input type="txt" value="{{empleados[0][0]}}" name="txtID" id="txtID"><br>
@@ -14,9 +15,17 @@
         <input type="txt" value="{{empleados[0][1]}}" name="txtNombre" id="txtNombre"><br>
         Correo:
         <input type="txt" value="{{empleados[0][2]}}" name="txtCorreo" id="txtCorreo"><br>
-        Foto:{{ empleados[0][3]}}
+        Foto: 
+        <br>
+        <img class="imgthumbnail" width="100" src="{{url_for('uploads', nombreFoto=empleado[3])}
+        }" alt="">
+        <br>
+        <b-img-thumbnaiL></b-img-thumbnaiL>
+        <!-- {{ empleados[0][3]}}  -->
         <input type="file" name="txtFoto" id="txtFoto"><br>
         <input type="submit" value="Guardar"><br>
+
     </form>
+    {% endfor %}
 </body>
 </html>
