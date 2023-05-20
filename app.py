@@ -122,18 +122,18 @@ def update():
  if _foto.filename != '':
 # Creamos el nombre de la foto y la guardamos.
   nuevoNombreFoto = tiempo + _foto.filename
- _foto.save("uploads/" + nuevoNombreFoto)
+  _foto.save("uploads/" + nuevoNombreFoto)
 # Buscamos el registro y buscamos el nombre de la foto vieja:
- cursor.execute("SELECT foto FROM `sistema`.`empleados` WHERE id=%s", id)
- fila= cursor.fetchall()
+  cursor.execute("SELECT foto FROM `sistema`.`empleados` WHERE id=%s", id)
+  fila= cursor.fetchall()
 # Y la borramos de la carpeta:
-os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
+  os.remove(os.path.join(app.config['CARPETA'], fila[0][0]))
 # Finalmente, actualizamos la DB con el nuevo nombre del archivo:
- cursor.execute("UPDATE `sistema`.`empleados` SET foto=%s WHERE id=%s;", (nuevoNombreFoto, id))
- conn.commit()
- cursor.execute(sql, datos)
- conn.commit()
- return redirect('/')
+  cursor.execute("UPDATE `sistema`.`empleados` SET foto=%s WHERE id=%s;", (nuevoNombreFoto, id))
+  conn.commit()
+  cursor.execute(sql, datos)
+  conn.commit()
+  return redirect('/')
     
 #@app.route('/update',methods=['POST'])
 #def update():
